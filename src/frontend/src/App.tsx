@@ -16,6 +16,7 @@ import {
 import { Flame, RotateCcw, Settings } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { FocusAnimationOverlay } from "./components/FocusAnimationOverlay";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -294,7 +295,7 @@ function SettingsModal({
           <div className="space-y-2">
             <Label
               style={{ color: "oklch(0.62 0.008 260)" }}
-              className="text-xs tracking-widest uppercase"
+              className="text-xs tracking-widests uppercase"
             >
               Break Duration
             </Label>
@@ -359,13 +360,11 @@ export default function App() {
   const typewriterRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const silenceLockRef = useRef(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // Store mutable values in refs to avoid stale closure issues
   const modeRef = useRef<TimerMode>("idle");
   const memoryRef = useRef<Memory>(memory);
   const focusMinsRef = useRef(25);
   const breakMinsRef = useRef(5);
 
-  // Keep refs in sync
   modeRef.current = mode;
   memoryRef.current = memory;
   focusMinsRef.current = focusMins;
@@ -439,7 +438,6 @@ export default function App() {
   }, [mode]);
 
   // ── Session complete ─────────────────────────────────────────────────────────
-  // Use refs to avoid stale closure in timeLeft effect
 
   useEffect(() => {
     if (timeLeft !== 0) return;
@@ -530,10 +528,11 @@ export default function App() {
   const secs = (timeLeft % 60).toString().padStart(2, "0");
   const timeStr = `${mins}:${secs}`;
   const isRunning = mode === "running" || mode === "break";
+  const isFocus = mode === "running" || mode === "idle" || mode === "paused";
   const characterImage =
     mode === "break"
-      ? "/assets/generated/break.dim_400x500.png"
-      : "/assets/generated/focus.dim_400x500.png";
+      ? "/assets/uploads/8b45e0a1e9a42950603d1d3a859e3354-1-1.jpg"
+      : "/assets/uploads/e5840103642d689cf0b1b7daa1e348d0-1.jpg";
 
   // ── Render ───────────────────────────────────────────────────────────────────
 
@@ -571,7 +570,7 @@ export default function App() {
               className="text-sm font-medium"
               style={{ color: "oklch(0.93 0.004 260)" }}
             >
-              Jun
+              Yeon Si-eun
             </div>
             <div className="text-xs" style={{ color: "oklch(0.42 0.006 260)" }}>
               studying
@@ -584,7 +583,7 @@ export default function App() {
               color: "oklch(0.72 0.19 52)",
             }}
           >
-            J
+            Y
           </div>
         </div>
       </header>
@@ -596,6 +595,7 @@ export default function App() {
           className="relative w-full max-w-sm mx-auto mt-8"
           style={{ height: 340 }}
         >
+          {/* Cinematic vignette */}
           <div
             className="absolute inset-0 z-10 pointer-events-none"
             style={{
@@ -603,12 +603,24 @@ export default function App() {
                 "radial-gradient(ellipse 80% 90% at 50% 50%, transparent 40%, oklch(0.09 0.003 250 / 0.5) 70%, oklch(0.09 0.003 250 / 0.92) 100%)",
             }}
           />
+
+          {/* Focus session life animations — layered above image, below vignette */}
+          {isFocus && (
+            <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+              <FocusAnimationOverlay />
+            </div>
+          )}
+
           <AnimatePresence mode="wait">
             <motion.img
               key={characterImage}
               src={characterImage}
-              alt={mode === "break" ? "Jun relaxing" : "Jun studying"}
-              className="animate-breathe object-contain w-full h-full"
+              alt={
+                mode === "break"
+                  ? "Yeon Si-eun relaxing"
+                  : "Yeon Si-eun studying"
+              }
+              className={`${mode === "break" ? "animate-breathe" : ""} object-contain w-full h-full`}
               style={{ objectPosition: "center bottom" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
