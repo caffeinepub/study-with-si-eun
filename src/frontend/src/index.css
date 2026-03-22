@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.375rem;
+
+    /* Dark-only theme — Korean study aesthetic */
+    --background: 0.09 0.003 250;
+    --foreground: 0.93 0.004 260;
+    --card: 0.13 0.005 255;
+    --card-foreground: 0.93 0.004 260;
+    --popover: 0.13 0.005 255;
+    --popover-foreground: 0.93 0.004 260;
+    --primary: 0.72 0.19 52;
+    --primary-foreground: 0.09 0.003 250;
+    --secondary: 0.17 0.005 255;
+    --secondary-foreground: 0.93 0.004 260;
+    --muted: 0.16 0.004 255;
+    --muted-foreground: 0.62 0.008 260;
+    --accent: 0.72 0.19 52;
+    --accent-foreground: 0.09 0.003 250;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.19 0.007 255;
+    --input: 0.19 0.007 255;
+    --ring: 0.72 0.19 52;
+    --chart-1: 0.72 0.19 52;
+    --chart-2: 0.8 0.17 60;
+    --chart-3: 0.398 0.07 227;
+    --chart-4: 0.828 0.189 84;
+    --chart-5: 0.769 0.188 70;
+    --sidebar: 0.13 0.005 255;
+    --sidebar-foreground: 0.93 0.004 260;
+    --sidebar-primary: 0.72 0.19 52;
+    --sidebar-primary-foreground: 0.09 0.003 250;
+    --sidebar-accent: 0.17 0.005 255;
+    --sidebar-accent-foreground: 0.93 0.004 260;
+    --sidebar-border: 0.19 0.007 255;
+    --sidebar-ring: 0.72 0.19 52;
+
+    /* Custom app tokens */
+    --amber: 0.72 0.19 52;
+    --amber-glow: 0.8 0.17 60;
+    --surface: 0.13 0.005 255;
+    --surface-raised: 0.16 0.006 255;
+    --text-primary: 0.93 0.004 260;
+    --text-secondary: 0.62 0.008 260;
+    --text-dim: 0.42 0.006 260;
+    --green-online: 0.72 0.18 155;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+}
+
+@layer utilities {
+  .text-amber {
+    color: oklch(var(--amber));
+  }
+
+  .text-amber-glow {
+    color: oklch(var(--amber-glow));
+  }
+
+  .text-dim {
+    color: oklch(var(--text-dim));
+  }
+
+  .text-secondary-custom {
+    color: oklch(var(--text-secondary));
+  }
+
+  .bg-surface {
+    background-color: oklch(var(--surface));
+  }
+
+  .bg-surface-raised {
+    background-color: oklch(var(--surface-raised));
+  }
+
+  .border-subtle {
+    border-color: oklch(var(--border));
+  }
+
+  .glow-amber {
+    box-shadow: 0 0 20px oklch(var(--amber) / 0.3), 0 0 40px
+      oklch(var(--amber) / 0.1);
+  }
+
+  .glow-amber-text {
+    text-shadow: 0 0 20px oklch(var(--amber) / 0.6);
+  }
+
+  .vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 40%,
+      oklch(var(--background) / 0.6) 70%,
+      oklch(var(--background) / 0.95) 100%
+    );
+  }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1.0);
+    }
+    50% {
+      transform: scale(1.018);
+    }
+  }
+
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .animate-pulse-ring {
+    animation: pulse-ring 2s ease-in-out infinite;
+  }
+
+  @keyframes blink-dot {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  .animate-blink {
+    animation: blink-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.4s ease-out forwards;
+  }
+}
